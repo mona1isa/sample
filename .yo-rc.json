@@ -1,0 +1,39 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "gitCompany": "",
+    "baseName": "sample",
+    "packageName": "io.sample.apiserver",
+    "packageFolder": "io/sample/apiserver",
+    "serverPort": 8080,
+    "serviceDiscoveryType": false,
+    "authenticationType": "jwt",
+    "uaaBaseName": "../uaa",
+    "cacheProvider": "no",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "enableSwaggerCodegen": false,
+    "messageBroker": false,
+    "buildTool": "gradle",
+    "useSass": false,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "enableTranslation": false,
+    "nativeLanguage": "en",
+    "languages": [
+      "en"
+    ],
+    "clientFramework": "angularX",
+    "jhiPrefix": "jhi",
+    "jhipsterVersion": "5.7.2",
+    "jwtSecretKey": "ZThmZTBiMzBhZTBhN2E5YjA0YmI3NzU4ZWYyMmRhYmQyMTJiZTc3MjBmZTgyZjZhMDZhOTY0Y2UxMjhiNTQ5OTkyODRmYjZkNzMzNmM2M2VlYjQ4OTRmMjYyYWZmOTJhNDBjOTQxMWVkOWIzZjdjZTk2MTk3MTk2Yzg3ZWJiMGU=",
+    "otherModules": []
+  },
+  "git-provider": "GitHub",
+  "git-company": "zhanyCoding",
+  "repository-name": "sample"
+}
