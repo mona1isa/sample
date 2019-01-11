@@ -12,14 +12,17 @@ buildscript {
         classpath "io.spring.gradle:propdeps-plugin:0.0.10.RELEASE"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.5.2"
         //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
+
+        // for docker
+        classpath "se.transmode.gradle:gradle-docker:1.2"
     }
 }
 
 plugins {
     id "org.sonarqube" version "2.6.2"
-    id "net.ltgt.apt-eclipse" version "0.19"
-    id "net.ltgt.apt-idea" version "0.19"
-    id "net.ltgt.apt" version "0.19"
+    id "net.ltgt.apt-eclipse" version "0.18"
+    id "net.ltgt.apt-idea" version "0.18"
+    id "net.ltgt.apt" version "0.18"
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
     id "com.moowork.node" version "1.2.0"
     id 'org.liquibase.gradle' version '2.0.1'
@@ -40,6 +43,10 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
 
+// for docker
+apply plugin: 'application'
+apply plugin: 'docker'
+
 dependencyManagement {
   imports {
     mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
@@ -59,6 +66,7 @@ bootWar {
 }
 
 war {
+    mainClassName = 'io.sample.apiserver.SampleApp'
     webAppDirName = 'build/www/'
     enabled = true
     classifier = 'original'
@@ -94,10 +102,6 @@ if (OperatingSystem.current().isWindows()) {
 
 test {
     exclude '**/CucumberTest*'
-
-    // uncomment if the tests reports are not generated
-    // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
-    // ignoreFailures true
     reports.html.enabled = false
 }
 
@@ -161,7 +165,6 @@ repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
-    //jhipster-needle-gradle-repositories - JHipster will add additional repositories
 }
 
 dependencies {
@@ -242,6 +245,27 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-library"
     testCompile "com.h2database:h2"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+}
+
+jar {
+    baseName = 'sample'
+    version = '0.0.1-SNAPSHOT'
+    mainClassName = 'io.sample.apiserver.SampleApp'
+}
+
+task buildDockerfile(type: Docker, dependsOn: 'war') {
+    dependsOn build
+    
+    baseImage = 'openjdk:8-jre-alpine'
+    maintainer = 'Zhany_v <zhangyu_neu@sina.com>'
+
+    runCommand('adduser -D -s /bin/sh jhipster')
+    workingDir('/home/sample')
+    addFile("${buildDir}/libs/${jar.baseName}-${jar.version}.war", "app.war")
+
+    exposePort(8080)
+    entryPoint(["java", "-jar", "app.war"])
+    dryRun(true)
 }
 
 task cleanResources(type: Delete) {
