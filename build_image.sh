@@ -1,4 +1,6 @@
 #!/bin/bash
+gradle build buildDockerfile
+
 cd build/docker/
 
 docker build -t sample:latest -f Dockerfile .
